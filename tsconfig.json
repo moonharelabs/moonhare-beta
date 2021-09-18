@@ -10,8 +10,10 @@
         "forceConsistentCasingInFileNames": true,
         "types": ["node", "jest"],
         "declaration": true,
-        "declarationDir": "./dist/types"
+        "declarationDir": "./dist/types",
+        "outDir": "./dist",
+        "noImplicitAny": true
     },
-    "include": ["./src", "./example"],
-    "exclude": ["./test", "dist"]
+    "include": ["src"],
+    "exclude": ["node_modules", "**/*.test.ts"]
 }
