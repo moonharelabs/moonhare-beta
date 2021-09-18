@@ -58,9 +58,9 @@ export const variantOrder = [
     'group-visited',
     'motion-safe',
     'motion-reduce'
-]
+];
 
-export const layerOrder = ['base', 'components', 'shortcuts', 'utilities']
+export const layerOrder = ['base', 'components', 'shortcuts', 'utilities'];
 
 export enum pluginOrder {
     'container' = 100,

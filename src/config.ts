@@ -1,10 +1,10 @@
-import {variantOrder} from './order'
-import type {Config} from './interfaces'
-import defaultPlugin from './plugins'
-import {hsl2hex} from './tools'
+import {variantOrder} from './order';
+import type {Config} from './interfaces';
+import defaultPlugin from './plugins';
+import {hsl2hex} from './tools';
 
-const colors: {[key: string]: string} = {}
-;[
+const colors: {[key: string]: string} = {};
+[
     'red',
     'dark-orange',
     'orange',
@@ -23,7 +23,7 @@ const colors: {[key: string]: string} = {}
     'fuchsia',
     'hotpink',
     'pink'
-].forEach((name, index) => (colors[name] = hsl2hex(index * 20, 100, 50)))
+].forEach((name, index) => (colors[name] = hsl2hex(index * 20, 100, 50)));
 export const baseConfig: Config = {
     // purge: [],
     prefixer: true,
@@ -42,4 +42,4 @@ export const baseConfig: Config = {
     },
     variantOrder: variantOrder,
     plugins: [defaultPlugin]
-}
+};

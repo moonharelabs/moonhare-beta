@@ -1,4 +1,4 @@
-import {baseConfig} from './config'
+import {baseConfig} from './config';
 
 describe('Config', () => {
     test('baseConfig', () => {
@@ -49,6 +49,6 @@ describe('Config', () => {
               "variantOrder": Any<Array>,
             }
         `
-        )
-    })
-})
+        );
+    });
+});

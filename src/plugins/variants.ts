@@ -1,10 +1,10 @@
-import { VariantGenerator, Plugin } from '../interfaces';
+import {VariantGenerator, Plugin} from '../interfaces';
 
-type RawBreakpoint = { raw: string };
-type MinMaxBreakpoint = { min?: string; max?: string };
+type RawBreakpoint = {raw: string};
+type MinMaxBreakpoint = {min?: string; max?: string};
 type ScreenBreakpoint = RawBreakpoint | MinMaxBreakpoint;
 
-export default (({ addVariant, theme }) => {
+export default (({addVariant, theme}) => {
     const breakpoints = Object.entries(
         theme('screens') as Record<string, string | ScreenBreakpoint>
     ).sort(([, sizeA], [, sizeB]) => sortWeight(sizeA) - sortWeight(sizeB));
@@ -12,14 +12,14 @@ export default (({ addVariant, theme }) => {
     breakpoints.forEach(([name, size], index) => {
         if (typeof size === 'string') {
             const [, nextSize] = breakpoints[index + 1] || [];
-            addVariant(name, styleForBreakpoint({ min: size }));
+            addVariant(name, styleForBreakpoint({min: size}));
             addVariant(
                 `<${name}`,
                 styleForBreakpoint({
                     max: size.replace(
                         /^-?[0-9]+\.?[0-9]*/,
-                        (value) => +value - 0.1 + ''
-                    ),
+                        value => +value - 0.1 + ''
+                    )
                 })
             );
             addVariant(
@@ -30,19 +30,19 @@ export default (({ addVariant, theme }) => {
                               min: size,
                               max: (nextSize as string).replace(
                                   /^-?[0-9]+\.?[0-9]*/,
-                                  (value) => +value - 0.1 + ''
-                              ),
+                                  value => +value - 0.1 + ''
+                              )
                           }
-                        : { min: size }
+                        : {min: size}
                 )
             );
-            addVariant(`-${name}`, styleForBreakpoint({ max: size }));
+            addVariant(`-${name}`, styleForBreakpoint({max: size}));
             addVariant(
                 `\\+${name}`,
                 styleForBreakpoint(
                     nextSize
-                        ? { min: size, max: nextSize as string }
-                        : { min: size }
+                        ? {min: size, max: nextSize as string}
+                        : {min: size}
                 )
             );
         } else {
@@ -91,9 +91,9 @@ export default (({ addVariant, theme }) => {
         'scope',
         'target',
         'valid',
-        'visited',
-    ].forEach((pseudo) => {
-        addVariant(pseudo, ({ style }) =>
+        'visited'
+    ].forEach(pseudo => {
+        addVariant(pseudo, ({style}) =>
             style.append.push(
                 ':' + ['first', 'last'].includes(pseudo)
                     ? pseudo + '-child'
@@ -103,14 +103,14 @@ export default (({ addVariant, theme }) => {
 
         // Not states
         // https://developer.mozilla.org/en-US/docs/Web/CSS/:not
-        addVariant('not-' + pseudo, ({ style }) =>
+        addVariant('not-' + pseudo, ({style}) =>
             style.append.push(`:not(:${pseudo})`)
         );
 
         // Group states
         // You'll need to add className="group" to an ancestor to make these work
         // https://github.com/ben-rogerson/twin.macro/blob/master/docs/group.md
-        addVariant('group-' + pseudo, ({ style }) =>
+        addVariant('group-' + pseudo, ({style}) =>
             style.prepend.push(`group:${pseudo} `)
         );
     });
@@ -127,44 +127,42 @@ export default (({ addVariant, theme }) => {
         'first-line',
         'marker',
         'placeholder',
-        'selection',
-    ].forEach((pseudo) => {
-        addVariant(pseudo, ({ style }) => style.append.push('::' + pseudo));
+        'selection'
+    ].forEach(pseudo => {
+        addVariant(pseudo, ({style}) => style.append.push('::' + pseudo));
     });
-
-    ['even', 'odd'].forEach((pseudo) => {
-        addVariant(pseudo, ({ style }) =>
+    ['even', 'odd'].forEach(pseudo => {
+        addVariant(pseudo, ({style}) =>
             style.append.push(`nth-child(${pseudo})`)
         );
     });
-    ['even', 'odd'].forEach((pseudo) => {
-        addVariant(pseudo, ({ style }) =>
+    ['even', 'odd'].forEach(pseudo => {
+        addVariant(pseudo, ({style}) =>
             style.append.push(`nth-of-type(${pseudo})`)
         );
     });
 
-    addVariant('svg', ({ style }) => style.append.push(' svg'));
-    addVariant('all', ({ style }) => style.append.push(' *'));
-    addVariant('children', ({ style }) => style.append.push(' > *'));
-    addVariant('siblings', ({ style }) => style.append.push(' ~ *'));
-    addVariant('sibling', ({ style }) => style.append.push(' + *'));
+    addVariant('svg', ({style}) => style.append.push(' svg'));
+    addVariant('all', ({style}) => style.append.push(' *'));
+    addVariant('children', ({style}) => style.append.push(' > *'));
+    addVariant('siblings', ({style}) => style.append.push(' ~ *'));
+    addVariant('sibling', ({style}) => style.append.push(' + *'));
 
-    addVariant('ltr', ({ style }) => style.append.push("[dir='ltr'] "));
-    addVariant('rtl', ({ style }) => style.append.push("[dir='rtl'] "));
+    addVariant('ltr', ({style}) => style.append.push("[dir='ltr'] "));
+    addVariant('rtl', ({style}) => style.append.push("[dir='rtl'] "));
 
     // Motion control
     // https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion
-    addVariant('motion-safe', ({ style }) =>
+    addVariant('motion-safe', ({style}) =>
         style.atRules.push('@media (prefers-reduced-motion: no-preference)')
     );
-    addVariant('motion-reduce', ({ style }) =>
+    addVariant('motion-reduce', ({style}) =>
         style.atRules.push('@media (prefers-reduced-motion: reduce)')
     );
-
-    ['dark', 'light'].forEach((type) => {
-        const at: VariantGenerator = ({ style }) =>
+    ['dark', 'light'].forEach(type => {
+        const at: VariantGenerator = ({style}) =>
                 style.atRules.push(`'@media (prefers-color-scheme: ${type})`),
-            dot: VariantGenerator = ({ style }) =>
+            dot: VariantGenerator = ({style}) =>
                 style.prepend.push(`.${type} `);
         addVariant('@' + type, at);
         addVariant('.' + type, dot);
@@ -178,11 +176,11 @@ function styleForBreakpoint(rule: ScreenBreakpoint): VariantGenerator {
             ? rule.raw
             : [
                   rule.min && `(min-width: ${rule.min})`,
-                  rule.max && `(max-width: ${rule.max})`,
+                  rule.max && `(max-width: ${rule.max})`
               ]
                   .filter(Boolean)
                   .join(' and ');
-    return ({ style }) => style.atRules.push(`@media ${mediaConditions}`);
+    return ({style}) => style.atRules.push(`@media ${mediaConditions}`);
 }
 
 // NOTE: Non-size breakpoints should come first, to avoid using them in the

@@ -1,12 +1,12 @@
-import { Plugin } from '../interfaces';
-import { Block, dashify } from '../style';
+import {Plugin} from '../interfaces';
+import {Block, dashify} from '../style';
 
 export default (({
     addBase: base,
     addUtilities: add,
     addComponents: component,
     addDynamic: dynamic,
-    theme,
+    theme
 }) => {
     function Value<P extends string, V extends string>(
         values: V[],
@@ -14,24 +14,24 @@ export default (({
     ) {
         add(
             Object.fromEntries(
-                values.map((value) => [
+                values.map(value => [
                     `.${value}`,
-                    { [dashify(property)]: value } as { [key in P]: V },
+                    {[dashify(property)]: value} as {[key in P]: V}
                 ])
             ),
-            { group: property }
+            {group: property}
         );
     }
 
     function nameValue(values: string[], name: string, property = name) {
         add(
             Object.fromEntries(
-                values.map((value) => [
+                values.map(value => [
                     `.${name}-${value}`,
-                    { [dashify(property)]: value },
+                    {[dashify(property)]: value}
                 ])
             ),
-            { group: property }
+            {group: property}
         );
     }
 
@@ -44,10 +44,10 @@ export default (({
             Object.fromEntries(
                 Object.entries(map).map(([value, css]) => [
                     `.${name}-${value}`,
-                    { [dashify(property)]: css },
+                    {[dashify(property)]: css}
                 ])
             ),
-            { group: property }
+            {group: property}
         );
     }
 
@@ -72,13 +72,13 @@ export default (({
                         {
                             width: size,
                             paddingLeft: theme(`container.padding.${screen}`),
-                            paddingRight: theme(`container.padding.${screen}`),
-                        } as Block,
+                            paddingRight: theme(`container.padding.${screen}`)
+                        } as Block
                     ])
-                ),
-            },
+                )
+            }
         },
-        { group: 'container' }
+        {group: 'container'}
     );
 
     // https://tailwindcss.com/docs/box-decoration-break
@@ -88,7 +88,7 @@ export default (({
     nameMap(
         {
             border: 'border-box',
-            content: 'content-box',
+            content: 'content-box'
         },
         'box',
         'boxSizing'
@@ -118,13 +118,13 @@ export default (({
                 'inline-grid',
                 'contents',
                 'list-item',
-                'hidden',
-            ].map((value) => [
+                'hidden'
+            ].map(value => [
                 '.' + value,
-                { display: value === 'hidden' ? 'none' : value },
+                {display: value === 'hidden' ? 'none' : value}
             ])
         ),
-        { group: 'display' }
+        {group: 'display'}
     );
 
     // https://tailwindcss.com/docs/float
@@ -137,13 +137,13 @@ export default (({
     add(
         {
             '.isolate': {
-                isolation: 'isolate',
+                isolation: 'isolate'
             },
             '.isolation-auto': {
-                isolation: 'auto',
-            },
+                isolation: 'auto'
+            }
         },
-        { group: 'isolation' }
+        {group: 'isolation'}
     );
 
     // https://tailwindcss.com/docs/object-fit
@@ -158,19 +158,19 @@ export default (({
     nameValue(overflow, 'overflow-x');
     nameValue(overflow, 'overflow-y');
 
-    dynamic('bg', (utility) =>
+    dynamic('bg', utility =>
         utility
             .color(
                 theme('backgroundColor') || theme('colors'),
-                ({ r, g, b }) => `rgba(${r},${g},${b},var(--mh-bg-opacity))`
+                ({r, g, b}) => `rgba(${r},${g},${b},var(--mh-bg-opacity))`
             )
             .sqb()
             .variable()
-            .css({ '--mh-bg-opacity': '1', backgroundColor: utility.value })
-            ?.map((style) => style.meta('utilities', 'backgroundColor'))
+            .css({'--mh-bg-opacity': '1', backgroundColor: utility.value})
+            ?.map(style => style.meta('utilities', 'backgroundColor'))
     );
 
-    dynamic('h|w', (utility) => {
+    dynamic('h|w', utility => {
         const name = utility.id === 'w' ? 'width' : 'height';
         return utility
             .body(theme(name))
@@ -178,12 +178,12 @@ export default (({
             .spacing()
             .ratio()
             .dimension()
-            .nxl((number) => `${(number - 3) * 8 + 48}rem`)
+            .nxl(number => `${(number - 3) * 8 + 48}rem`)
             .variable()
             .property(name)
             ?.meta('utilities', name, undefined);
     });
-    dynamic('space-(x|y)', (utility) =>
+    dynamic('space-(x|y)', utility =>
         utility
             .body(theme('space'))
             .sqb()
@@ -195,17 +195,17 @@ export default (({
                     ? {
                           '--tw-space-x-reverse': '0',
                           'margin-right': `calc(${utility.value} * var(--tw-space-x-reverse))`,
-                          'margin-left': `calc(${utility.value} * calc(1 - var(--tw-space-x-reverse)))`,
+                          'margin-left': `calc(${utility.value} * calc(1 - var(--tw-space-x-reverse)))`
                       }
                     : {
                           '--tw-space-y-reverse': '0',
                           'margin-top': `calc(${utility.value} * calc(1 - var(--tw-space-y-reverse)))`,
-                          'margin-bottom': `calc(${utility.value} * var(--tw-space-y-reverse))`,
+                          'margin-bottom': `calc(${utility.value} * var(--tw-space-y-reverse))`
                       }
             )
-            ?.map((style) => {
+            ?.map(style => {
                 style.selectors = style.selectors.map(
-                    (selector) => selector + '> :not([hidden]) ~ :not([hidden])'
+                    selector => selector + '> :not([hidden]) ~ :not([hidden])'
                 );
                 return style.meta(
                     'utilities',
@@ -217,7 +217,7 @@ export default (({
             })
     );
 
-    dynamic('grid-(cols|rows)', (utility) => {
+    dynamic('grid-(cols|rows)', utility => {
         const type = utility.match[1] === 'cols' ? 'columns' : 'rows';
         const group =
             type === 'rows' ? 'gridTemplateRows' : 'gridTemplateColumns';
@@ -226,7 +226,7 @@ export default (({
             utility
                 .body(theme(group))
                 .sqb()
-                .string((value) => (value === 'none' ? value : undefined))
+                .string(value => (value === 'none' ? value : undefined))
                 .property(`grid-template-${type}`)
                 ?.meta('utilities', group, undefined, 1) ||
             utility
@@ -234,7 +234,7 @@ export default (({
                 .variable()
                 .property(
                     `grid-template-${type}`,
-                    (value) => `repeat(${value}, minmax(0, 1fr))`
+                    value => `repeat(${value}, minmax(0, 1fr))`
                 )
                 ?.meta('utilities', group, undefined, 2)
         );

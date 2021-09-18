@@ -1,25 +1,25 @@
-import {baseConfig} from './config'
+import {baseConfig} from './config';
 import type {
     Config,
     UtilityGenerator,
     PluginUtils,
     VariantGenerator,
     PluginUtilOptions
-} from './interfaces'
-import {Block, Container, CSS, parseCSS, Style, StyleSheet} from './style'
-import {deepExtend, escape} from './tools'
-import {Utility} from './util'
+} from './interfaces';
+import {Block, Container, CSS, parseCSS, Style, StyleSheet} from './style';
+import {deepExtend, escape} from './tools';
+import {Utility} from './util';
 
 export class Processor {
     staticPlugins: Map<
         string,
         {className: string; css: Block; options: PluginUtilOptions}
-    > = new Map()
-    preflighPlugins: Container[] = []
-    dynamicPlugins: Map<string, UtilityGenerator> = new Map()
-    _variants: Map<string, VariantGenerator> = new Map()
-    count = 0
-    _config: Config
+    > = new Map();
+    preflighPlugins: Container[] = [];
+    dynamicPlugins: Map<string, UtilityGenerator> = new Map();
+    _variants: Map<string, VariantGenerator> = new Map();
+    count = 0;
+    _config: Config;
     pluginUtils: PluginUtils = {
         addDynamic: (key, generator, options) =>
             this.addDynamic(key, generator, options),
@@ -34,32 +34,32 @@ export class Processor {
         theme: (path, defaultValue) => this.theme(path, defaultValue),
         config: (path, defaultValue) => this.config(path, defaultValue),
         variants: (path, defaultValue) => [...this.variants(path, defaultValue)]
-    }
+    };
 
     constructor(config: Config = {}) {
-        this._config = this.resolveConfig(config)
+        this._config = this.resolveConfig(config);
         for (const plugin of this._config.plugins ?? []) {
-            plugin(this.pluginUtils)
+            plugin(this.pluginUtils);
         }
     }
 
     resolveConfig(config: Config): Config {
-        return deepExtend({}, baseConfig, config)
+        return deepExtend({}, baseConfig, config);
     }
 
     extract(className: string): Container[] | undefined {
-        const utility = new Utility(className)
-        let matched = true
-        let styles: Container[] | undefined
+        const utility = new Utility(className);
+        let matched = true;
+        let styles: Container[] | undefined;
         if (this._config.prefix)
             className = className.replace(
                 new RegExp(`^${this._config.prefix}`),
                 ''
-            )
+            );
         while (matched) {
-            matched = false
+            matched = false;
             for (const [variant] of this._variants) {
-                if (utility.matchVariant(variant)) matched = true
+                if (utility.matchVariant(variant)) matched = true;
             }
         }
 
@@ -73,13 +73,13 @@ export class Processor {
                 className = realClass.replace(
                     '.' + escape((utility.isNegative ? '-' : '') + utility.raw),
                     '.' + className
-                )
+                );
                 styles = parseCSS(
                     options.respectPrefix ? this.prefix(className) : className,
                     css
-                )
+                );
                 if (options.respectImportant && this._config.important)
-                    styles.forEach(style => (style.important = true))
+                    styles.forEach(style => (style.important = true));
                 return styles.map(style =>
                     style.meta(
                         options.layer,
@@ -87,18 +87,18 @@ export class Processor {
                         options.order,
                         options.offset
                     )
-                )
-                break
+                );
+                break;
             }
         }
 
         if (!styles)
             for (const [expr, generator] of this.dynamicPlugins) {
                 if (utility.matchPlugin(expr)) {
-                    const style = generator(utility, this.pluginUtils)
+                    const style = generator(utility, this.pluginUtils);
                     if (style) {
-                        styles = Array.isArray(style) ? style : [style]
-                        break
+                        styles = Array.isArray(style) ? style : [style];
+                        break;
                     }
                 }
             }
@@ -107,67 +107,67 @@ export class Processor {
             for (const variant of utility.variants) {
                 styles.forEach(style => {
                     if (style instanceof Style) {
-                        style._meta.variants.push(variant.id)
-                        ;(this._variants.get(variant.id) as VariantGenerator)({
+                        style._meta.variants.push(variant.id);
+                        (this._variants.get(variant.id) as VariantGenerator)({
                             style
-                        })
+                        });
                     }
-                })
+                });
             }
             if (utility.important)
-                styles.forEach(style => (style.important = true))
+                styles.forEach(style => (style.important = true));
 
-            return styles
+            return styles;
         }
     }
 
     interpret(classNames: string) {
-        const classes = classNames.split(/\s+/g)
-        const success: string[] = []
-        const ignored: string[] = []
-        const styleSheet = new StyleSheet()
+        const classes = classNames.split(/\s+/g);
+        const success: string[] = [];
+        const ignored: string[] = [];
+        const styleSheet = new StyleSheet();
         for (const className of classes) {
-            const result = this.extract(className)
+            const result = this.extract(className);
             if (result) {
-                success.push(className)
-                styleSheet.add(...result)
-            } else ignored.push(className)
+                success.push(className);
+                styleSheet.add(...result);
+            } else ignored.push(className);
         }
-        styleSheet.variantOrder = this._config.variantOrder ?? []
+        styleSheet.variantOrder = this._config.variantOrder ?? [];
         return {
             success,
             ignored,
             styleSheet
-        }
+        };
     }
 
     preflight() {
-        return this.preflighPlugins
+        return this.preflighPlugins;
     }
 
-    e = escape
+    e = escape;
 
     prefix(selector: string): string {
-        return selector.replace(/(?=[\w])/, this._config.prefix ?? '')
+        return selector.replace(/(?=[\w])/, this._config.prefix ?? '');
     }
 
     config<T>(path: string, defaultValue?: T): T {
         try {
             const value =
                 new Function('_', `return _.${path}`)(this._config) ||
-                defaultValue
-            return value
+                defaultValue;
+            return value;
         } catch {
-            return defaultValue as T
+            return defaultValue as T;
         }
     }
 
     theme<T>(path: string, defaultValue?: T): T {
-        return this.config(`theme.${path}`, defaultValue)
+        return this.config(`theme.${path}`, defaultValue);
     }
 
     variants(path: string, defaultValue?: string[]) {
-        return this._variants.keys()
+        return this._variants.keys();
     }
 
     private addStatic(
@@ -181,60 +181,60 @@ export class Processor {
             respectPrefix: true,
             respectImportant: true,
             ...options
-        }
+        };
 
-        options.order = options.group ? undefined : this.count++
+        options.order = options.group ? undefined : this.count++;
 
-        const classes = className.match(/\.(?:[-\w\u{0080}-\u{FFFF}]|\\.)+/gu)
+        const classes = className.match(/\.(?:[-\w\u{0080}-\u{FFFF}]|\\.)+/gu);
 
         if (classes)
             this.staticPlugins.set(
                 '^' + classes.map(cls => cls.slice(1)).join('$|^') + '$',
                 {className, css: utility, options}
-            )
+            );
     }
 
     addUtilities(
         utils: CSS | CSS[],
         options: string[] | PluginUtilOptions = {}
     ) {
-        if (Array.isArray(options)) options = {variants: options}
+        if (Array.isArray(options)) options = {variants: options};
         options = {
             layer: 'utilities',
             variants: [],
             respectPrefix: true,
             respectImportant: true,
             ...options
-        }
-        let offset = 0 // set offset
+        };
+        let offset = 0; // set offset
         const addCSS = (utils: CSS) => {
             for (const [className, styles] of Object.entries(utils)) {
                 this.addStatic(className, styles, {
                     ...(options as PluginUtilOptions),
                     offset: offset++
-                })
+                });
             }
-        }
-        if (Array.isArray(utils)) utils.forEach(util => addCSS(util))
-        else addCSS(utils)
+        };
+        if (Array.isArray(utils)) utils.forEach(util => addCSS(util));
+        else addCSS(utils);
     }
     addComponents(
         utils: CSS | CSS[],
         options: string[] | PluginUtilOptions = {}
     ) {
-        if (Array.isArray(options)) options = {variants: options}
-        return this.addUtilities(utils, {layer: 'components', ...options})
+        if (Array.isArray(options)) options = {variants: options};
+        return this.addUtilities(utils, {layer: 'components', ...options});
     }
     addBase(utils: CSS | CSS[], options: string[] | PluginUtilOptions = {}) {
-        if (Array.isArray(options)) options = {variants: options}
+        if (Array.isArray(options)) options = {variants: options};
         options = {
             layer: 'base',
             variants: [],
             respectPrefix: true,
             respectImportant: true,
             ...options
-        }
-        let offset = 0 // set offset
+        };
+        let offset = 0; // set offset
 
         const addCSS = (utils: CSS) => {
             for (const [className, styles] of Object.entries(utils)) {
@@ -245,12 +245,12 @@ export class Processor {
                         (options as PluginUtilOptions).order || this.count++,
                         offset++
                     )
-                )
-                this.preflighPlugins.push(...css)
+                );
+                this.preflighPlugins.push(...css);
             }
-        }
-        if (Array.isArray(utils)) utils.forEach(util => addCSS(util))
-        else addCSS(utils)
+        };
+        if (Array.isArray(utils)) utils.forEach(util => addCSS(util));
+        else addCSS(utils);
     }
 
     addDynamic(
@@ -264,9 +264,9 @@ export class Processor {
             respectPrefix: true,
             respectImportant: true,
             ...options
-        }
+        };
         this.dynamicPlugins.set(name, (util, tools) => {
-            const styles = generator(util, tools)
+            const styles = generator(util, tools);
             if (styles) {
                 if (Array.isArray(styles))
                     styles.forEach(style => {
@@ -275,30 +275,30 @@ export class Processor {
                             options.group,
                             options.order,
                             undefined
-                        )
+                        );
                         if (options.respectImportant && this._config.important)
-                            style.important = true
-                    })
+                            style.important = true;
+                    });
                 else {
                     styles.meta(
                         options.layer,
                         options.group,
                         options.group ? undefined : this.count++,
                         undefined
-                    )
+                    );
                     if (options.respectImportant && this._config.important)
-                        styles.important = true
+                        styles.important = true;
                 }
-                return styles
+                return styles;
             }
-        })
+        });
     }
 
     addVariant(name: string, generator: VariantGenerator) {
         if (!this._config.variantOrder?.includes(name))
-            this._config.variantOrder?.push(name)
-        this._variants.set(name, generator)
+            this._config.variantOrder?.push(name);
+        this._variants.set(name, generator);
     }
 }
 
-export default Processor
+export default Processor;

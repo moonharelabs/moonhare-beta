@@ -1,4 +1,4 @@
-import { PluginUtils } from '../interfaces';
+import {PluginUtils} from '../interfaces';
 import preflight from './preflight';
 
 import utilities from './utilities';

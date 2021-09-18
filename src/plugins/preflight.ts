@@ -1,12 +1,12 @@
-import { Plugin } from '../interfaces';
+import {Plugin} from '../interfaces';
 
-export default (({ addBase, theme }) => {
+export default (({addBase, theme}) => {
     addBase({
         '*,::before,::after': {
             boxSizing: 'border-box',
             borderWidth: '0',
             borderStyle: 'solid',
-            borderColor: 'currentColor',
+            borderColor: 'currentColor'
         },
         html: {
             lineHeight: 1.5,
@@ -16,57 +16,57 @@ export default (({ addBase, theme }) => {
             fontFamily: theme(
                 'fontFamily.sans',
                 `ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"`
-            ),
+            )
         },
         body: {
             margin: '0',
-            lineHeight: 'inherit',
+            lineHeight: 'inherit'
         },
         hr: {
             height: '0',
             color: 'inherit',
-            borderTopWidth: '1px',
+            borderTopWidth: '1px'
         },
         'abbr[title]': {
-            textDecoration: 'underline dotted',
+            textDecoration: 'underline dotted'
         },
         'h1,h2,h3,h4,h5,h6': {
             fontSize: 'inherit',
-            fontWeight: 'inherit',
+            fontWeight: 'inherit'
         },
         a: {
             color: 'inherit',
-            textDecoration: 'inherit',
+            textDecoration: 'inherit'
         },
         'b,strong': {
-            fontWeight: 'bolder',
+            fontWeight: 'bolder'
         },
         'code,kbd,samp,pre': {
             fontFamily: theme(
                 'fontFamily.mono',
                 `ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace`
             ),
-            fontSize: '1em',
+            fontSize: '1em'
         },
         small: {
-            fontSize: '80%',
+            fontSize: '80%'
         },
         'sub,sup': {
             fontSize: '75%',
             lineHeight: 0,
             position: 'relative',
-            verticalAlign: 'baseline',
+            verticalAlign: 'baseline'
         },
         sub: {
-            bottom: '-0.25em',
+            bottom: '-0.25em'
         },
         sup: {
-            top: '-0.5em',
+            top: '-0.5em'
         },
         table: {
             textIndent: '0',
             borderColor: 'inherit',
-            borderCollapse: 'collapse',
+            borderCollapse: 'collapse'
         },
         'button,input,optgroup,select,textarea': {
             fontFamily: 'inherit',
@@ -74,77 +74,77 @@ export default (({ addBase, theme }) => {
             lineHeight: 'inherit',
             color: 'inherit',
             margin: '0',
-            padding: '0',
+            padding: '0'
         },
         'button,select': {
-            textTransform: 'none',
+            textTransform: 'none'
         },
         "button,[type='button'],[type='reset'],[type='submit']": {
             WebkitAppearance: 'button',
             backgroundColor: 'transparent',
-            backgroundImage: 'none',
+            backgroundImage: 'none'
         },
         ':-moz-focusring': {
-            outline: 'auto',
+            outline: 'auto'
         },
         ':-moz-ui-invalid': {
-            boxShadow: 'none',
+            boxShadow: 'none'
         },
         progress: {
-            verticalAlign: 'baseline',
+            verticalAlign: 'baseline'
         },
         '::-webkit-inner-spin-button,::-webkit-outer-spin-button': {
-            height: 'auto',
+            height: 'auto'
         },
         "[type='search']": {
             WebkitAppearance: 'textfield',
-            outlineOffset: '-2px',
+            outlineOffset: '-2px'
         },
         '::-webkit-search-decoration': {
-            WebkitAppearance: 'none',
+            WebkitAppearance: 'none'
         },
         '::-webkit-file-upload-button': {
             WebkitAppearance: 'button',
-            font: 'inherit',
+            font: 'inherit'
         },
         summary: {
-            display: 'list-item',
+            display: 'list-item'
         },
         'blockquote,dl,dd,h1,h2,h3,h4,h5,h6,hr,figure,p,pre': {
-            margin: '0',
+            margin: '0'
         },
         fieldset: {
             margin: '0',
-            padding: '0',
+            padding: '0'
         },
         legend: {
-            padding: '0',
+            padding: '0'
         },
         'ol,ul': {
             listStyle: 'none',
             margin: '0',
-            padding: '0',
+            padding: '0'
         },
         textarea: {
-            resize: 'vertical',
+            resize: 'vertical'
         },
         'input::placeholder,textarea::placeholder': {
             opacity: 1,
-            color: "theme('colors.gray.400', #9ca3af)",
+            color: "theme('colors.gray.400', #9ca3af)"
         },
         'button,[role="button"]': {
-            cursor: 'pointer',
+            cursor: 'pointer'
         },
         'img,svg,video,canvas,audio,iframe,embed,object': {
             display: 'block',
-            verticalAlign: 'middle',
+            verticalAlign: 'middle'
         },
         'img,video': {
             maxWidth: '100%',
-            height: 'auto',
+            height: 'auto'
         },
         '[hidden]': {
-            display: 'none',
-        },
+            display: 'none'
+        }
     });
 }) as Plugin;

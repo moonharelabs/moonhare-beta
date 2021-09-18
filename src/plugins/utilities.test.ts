@@ -1,8 +1,8 @@
 import Processor from '..';
 import CleanCSS from 'clean-css';
-import { Style } from '../style';
+import {Style} from '../style';
 
-const cleanCss = new CleanCSS({ format: 'beautify' });
+const cleanCss = new CleanCSS({format: 'beautify'});
 const processor = new Processor();
 function css(className: string) {
     return cleanCss.minify(processor.interpret(className).styleSheet.build())

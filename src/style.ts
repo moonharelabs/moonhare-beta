@@ -1,54 +1,54 @@
-import * as csstype from 'csstype'
-import {layerOrder, pluginOrder} from './order'
+import * as csstype from 'csstype';
+import {layerOrder, pluginOrder} from './order';
 
-export type Value = null | undefined | string | number
+export type Value = null | undefined | string | number;
 
 export interface Meta {
-    layer: string
-    order: number
-    offset: number
-    variants: string[]
+    layer: string;
+    order: number;
+    offset: number;
+    variants: string[];
 }
 
 export interface Block
     extends csstype.PropertiesFallback<Value, Value>,
         csstype.PropertiesHyphenFallback<Value, Value> {
-    [property: string]: Value | Value[] | Block
+    [property: string]: Value | Value[] | Block;
 }
 
 export interface CSS {
-    [selector: string]: Block
+    [selector: string]: Block;
 }
 
-export type LayerName = 'base' | 'utilities' | 'components'
+export type LayerName = 'base' | 'utilities' | 'components';
 
 export class Declaration {
-    property: string
-    value: string
-    important: boolean
+    property: string;
+    value: string;
+    important: boolean;
     constructor(property: string, value: string, important = false) {
-        this.property = property
-        this.value = value
-        this.important = important
+        this.property = property;
+        this.value = value;
+        this.important = important;
     }
 
     build() {
-        return `${this.property}:${this.value}`
+        return `${this.property}:${this.value}`;
     }
 }
 
 export class Container {
-    nodes: (Declaration | Container)[]
+    nodes: (Declaration | Container)[];
     _meta: Meta = {
         layer: 'components',
         order: 0,
         offset: 0,
         variants: []
-    }
-    important = false
+    };
+    important = false;
 
     constructor(nodes: (Declaration | Container)[] = []) {
-        this.nodes = nodes
+        this.nodes = nodes;
     }
 
     meta(
@@ -65,33 +65,33 @@ export class Container {
                 : order,
             offset,
             variants
-        }
-        return this
+        };
+        return this;
     }
 
     build(): string {
-        return this.nodes.map(node => node.build()).join('')
+        return this.nodes.map(node => node.build()).join('');
     }
 }
 
 export class Style extends Container {
-    selectors: string[] = []
-    prepend: string[] = []
-    append: string[] = []
-    atRules: string[] = []
-    nodes: Declaration[]
+    selectors: string[] = [];
+    prepend: string[] = [];
+    append: string[] = [];
+    atRules: string[] = [];
+    nodes: Declaration[];
     constructor(
         selectors: string | string[] = [],
         style: Declaration | Declaration[] = []
     ) {
-        super()
-        if (Array.isArray(selectors)) this.selectors = selectors
-        else this.selectorText(selectors)
-        this.nodes = Array.isArray(style) ? style : [style]
+        super();
+        if (Array.isArray(selectors)) this.selectors = selectors;
+        else this.selectorText(selectors);
+        this.nodes = Array.isArray(style) ? style : [style];
     }
 
     selectorText(selectorText?: string) {
-        if (selectorText) this.selectors = selectorText.split(/\s*,\s*/)
+        if (selectorText) this.selectors = selectorText.split(/\s*,\s*/);
         else
             return this.selectors
                 .map(
@@ -100,64 +100,64 @@ export class Style extends Container {
                             ''
                         )}`
                 )
-                .join(',')
+                .join(',');
     }
 
     clone(
         selectors: string | string[] = [...this.selectors],
         nodes: Declaration | Declaration[] = [...this.nodes]
     ) {
-        const style = new Style(selectors, nodes)
-        style.atRules = [...this.atRules]
-        style._meta = {...this._meta}
-        return style
+        const style = new Style(selectors, nodes);
+        style.atRules = [...this.atRules];
+        style._meta = {...this._meta};
+        return style;
     }
 
     build() {
         let css = `${this.selectorText(undefined)}{${this.nodes
             .map(decl => {
-                if (this.important) decl.important = true
-                return decl.build()
+                if (this.important) decl.important = true;
+                return decl.build();
             })
-            .join(';')}}`
-        this.atRules.forEach(rule => (css = `${rule}{${css}}`))
-        return css
+            .join(';')}}`;
+        this.atRules.forEach(rule => (css = `${rule}{${css}}`));
+        return css;
     }
 }
 
 export class InlineAtRule extends Container {
-    name: string
-    params: string
+    name: string;
+    params: string;
     constructor(name: string, params: string) {
-        super()
-        this.name = name
-        this.params = params
+        super();
+        this.name = name;
+        this.params = params;
     }
     build() {
-        return `${this.name} ${this.params};`
+        return `${this.name} ${this.params};`;
     }
 }
 
-type sheetVariants = {[variant: string]: sheetVariants | Container[]}
-type sheetLayers = Record<string, sheetVariants>
+type sheetVariants = {[variant: string]: sheetVariants | Container[]};
+type sheetLayers = Record<string, sheetVariants>;
 export class StyleSheet {
-    layers: sheetLayers = {}
-    variantOrder: string[] = []
+    layers: sheetLayers = {};
+    variantOrder: string[] = [];
     constructor() {} // eslint-disable-line
     add(...styles: Container[]) {
         styles.forEach(style => {
             let layer =
                 this.layers[style._meta.layer] ||
-                (this.layers[style._meta.layer] = {})
+                (this.layers[style._meta.layer] = {});
 
             for (const variant of style._meta.variants) {
                 layer = (layer[variant] ||
-                    (layer[variant] = {})) as sheetVariants
+                    (layer[variant] = {})) as sheetVariants;
             }
-            ;((layer.DEFAULT || (layer.DEFAULT = [])) as Container[]).push(
+            ((layer.DEFAULT || (layer.DEFAULT = [])) as Container[]).push(
                 style
-            )
-        })
+            );
+        });
     }
     buildGroup(styles?: Container[]) {
         return styles
@@ -168,10 +168,10 @@ export class StyleSheet {
                           a._meta.offset - b._meta.offset
                   )
                   .map(style => {
-                      return style.build()
+                      return style.build();
                   })
                   .join('')
-            : ''
+            : '';
     }
     buildVariant(variantOrder: string[], variants?: sheetVariants): string {
         return variants
@@ -184,15 +184,15 @@ export class StyleSheet {
                           )
                       )
                       .join('')
-            : ''
+            : '';
     }
     build(variantOrder = this.variantOrder) {
         return layerOrder
             .map(layer => this.buildVariant(variantOrder, this.layers[layer]))
-            .join('')
+            .join('');
     }
 }
-const IMPORTANT = /\s*!important\s*$/i
+const IMPORTANT = /\s*!important\s*$/i;
 
 const UNITLESS = [
     'box-flex',
@@ -217,43 +217,43 @@ const UNITLESS = [
     'stroke-dashoffset',
     'stroke-opacity',
     'stroke-width'
-]
+];
 
 export function dashify(str: string) {
     return str
         .replace(/([A-Z])/g, '-$1')
         .replace(/^ms-/, '-ms-')
-        .toLowerCase()
+        .toLowerCase();
 }
 
 function decl(parent: Style, name: string, value?: string | number | null) {
-    name = dashify(name)
+    name = dashify(name);
     let propValue = '',
-        important = false
-    if (value === undefined || value === null) return
+        important = false;
+    if (value === undefined || value === null) return;
     else if (typeof value === 'number') {
         if (value === 0 || UNITLESS.indexOf(name) > -1)
-            propValue = value.toString()
-        else propValue = value + 'px'
+            propValue = value.toString();
+        else propValue = value + 'px';
     } else if (IMPORTANT.test(value)) {
-        propValue = value.replace(IMPORTANT, '')
-        important = true
-    } else propValue = value
+        propValue = value.replace(IMPORTANT, '');
+        important = true;
+    } else propValue = value;
 
-    parent.nodes.push(new Declaration(name, propValue, important))
+    parent.nodes.push(new Declaration(name, propValue, important));
 }
 
 export function parseCSS(parent: string, obj: Block, root?: Style) {
-    if (!root) root = new Style(parent)
+    if (!root) root = new Style(parent);
 
-    const output = [root]
+    const output = [root];
     for (const [name, value] of Object.entries(obj)) {
         if (value === null || typeof value === 'undefined') {
-            continue
+            continue;
         } else if (name[0] === '@') {
             const parts = name.match(
                 /@(\S+)(\s+([\W\w]*)\s*)?/
-            ) as RegExpMatchArray
+            ) as RegExpMatchArray;
             if (parts) {
                 if (typeof value == 'object' && !Array.isArray(value))
                     output.push(
@@ -262,24 +262,24 @@ export function parseCSS(parent: string, obj: Block, root?: Style) {
                             value,
                             root.clone(undefined, [])
                         ).map(sty => {
-                            sty.atRules.push(`@${parts[1]} ${parts[3]}`)
-                            return sty
+                            sty.atRules.push(`@${parts[1]} ${parts[3]}`);
+                            return sty;
                         })
-                    )
+                    );
             }
         } else if (Array.isArray(value)) {
             for (const i of value) {
-                decl(root, name, i)
+                decl(root, name, i);
             }
         } else if (typeof value === 'object') {
             const selector =
                 name[0] === '&'
                     ? name.replace(/&/g, parent)
-                    : `${parent} ${name.replace(/&/g, parent)}`
-            output.push(...parseCSS(parent, value, root.clone(selector, [])))
+                    : `${parent} ${name.replace(/&/g, parent)}`;
+            output.push(...parseCSS(parent, value, root.clone(selector, [])));
         } else {
-            decl(root, name, value)
+            decl(root, name, value);
         }
     }
-    return output
+    return output;
 }

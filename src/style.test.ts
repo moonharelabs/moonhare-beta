@@ -1,5 +1,5 @@
-import {parseCSS, StyleSheet} from './style'
-import CleanCSS from 'clean-css'
+import {parseCSS, StyleSheet} from './style';
+import CleanCSS from 'clean-css';
 
 describe('Styles', () => {
     test('parseCSS', () => {
@@ -37,6 +37,6 @@ describe('Styles', () => {
                 //    paddingRight: undefined,
                 //},
             }).length
-        ).toMatchInlineSnapshot(`2`)
-    })
-})
+        ).toMatchInlineSnapshot(`2`);
+    });
+});
