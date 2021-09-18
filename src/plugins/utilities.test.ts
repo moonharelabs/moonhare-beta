@@ -4,14 +4,16 @@ import {Style} from '../style';
 
 const cleanCss = new CleanCSS({format: 'beautify'});
 const processor = new Processor();
-function css(className: string) {
-    return cleanCss.minify(processor.interpret(className).styleSheet.build())
-        .styles;
+function css(className: string, proc = processor) {
+    return cleanCss.minify(proc.interpret(className).styleSheet.build()).styles;
 }
 
 describe('utilities', () => {
     test('dynamic', () => {
         expect([...processor.dynamicPlugins.keys()]).toMatchSnapshot();
+    });
+    test('container', () => {
+        expect(css('container')).toMatchSnapshot();
     });
     test('container', () => {
         expect(css('container')).toMatchSnapshot();

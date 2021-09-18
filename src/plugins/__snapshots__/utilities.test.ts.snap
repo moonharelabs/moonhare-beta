@@ -40,6 +40,37 @@ exports[`utilities container 1`] = `
 }"
 `;
 
+exports[`utilities container 2`] = `
+".container {
+  width: 100%
+}
+@media (min-width:640px) {
+  .container {
+    width: 640px
+  }
+}
+@media (min-width:768px) {
+  .container {
+    width: 768px
+  }
+}
+@media (min-width:1024px) {
+  .container {
+    width: 1024px
+  }
+}
+@media (min-width:1280px) {
+  .container {
+    width: 1280px
+  }
+}
+@media (min-width:1536px) {
+  .container {
+    width: 1536px
+  }
+}"
+`;
+
 exports[`utilities display 1`] = `
 ".flex {
   display: flex
