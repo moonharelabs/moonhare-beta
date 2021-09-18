@@ -51,6 +51,8 @@ export default (({
         );
     }
 
+    /** @category LAYOUT */ 
+
     // https://tailwindcss.com/docs/container
     component(
         {
@@ -62,8 +64,8 @@ export default (({
                 paddingRight:
                     theme('container.padding.DEFAULT') ||
                     theme('container.padding'),
-                marginRight: theme('container.center'),
-                marginLeft: theme('container.center'),
+                marginRight: theme('container.center') ? 'auto' : undefined,
+                marginLeft: theme('container.center') ? 'auto' : undefined,
                 ...Object.fromEntries(
                     Object.entries(
                         theme('container.screens') || theme('screens')
@@ -150,13 +152,75 @@ export default (({
     nameValue(['contain', 'cover', 'fill', 'none', 'scale-down'], 'objectFit');
 
     // https://tailwindcss.com/docs/object-position
-    nameMap(theme('objectPosition') ?? {}, 'objectPosition');
+    dynamic('object', utility =>
+        utility
+            .body(theme('objectPosition'))
+            .string(value => value.split('-').join(' '))
+            .property('object-position')
+            ?.meta('utilities', 'objectPosition')
+    );
 
     // https://tailwindcss.com/docs/overflow
-    const overflow = ['contain', 'cover', 'fill', 'none', 'scale-down'];
+    const overflow = ['auto', 'hidden', 'visible', 'scroll'];
     nameValue(overflow, 'overflow');
     nameValue(overflow, 'overflow-x');
     nameValue(overflow, 'overflow-y');
+
+    // https://tailwindcss.com/docs/position
+    Value(['static', 'fixed', 'absolute', 'relative', 'sticky'], 'position');
+
+    // https://tailwindcss.com/docs/top-right-bottom-left
+    dynamic('top|right|bottom|left|inset(-x|-y)?', utility =>
+        utility
+            .body(theme('inset'))
+            .sqb()
+            .spacing()
+            .ratio()
+            .dimension()
+            .variable()
+            .callback(() => {
+                switch (utility.id) {
+                    case 'top':
+                    case 'right':
+                    case 'bottom':
+                    case 'left':
+                        return utility
+                            .property(utility.id)
+                            ?.meta('utilities', 'inset', undefined, 4);
+                    case 'inset-x':
+                        return utility
+                            .property(['right', 'left'])
+                            ?.meta('utilities', 'inset', undefined, 3);
+                    case 'inset-y':
+                        return utility
+                            .property(['top', 'bottom'])
+                            ?.meta('utilities', 'inset', undefined, 2);
+                    case 'inset':
+                        return utility
+                            .property(['top', 'right', 'bottom', 'left'])
+                            ?.meta('utilities', 'inset', undefined, 1);
+                }
+            })
+    );
+
+    // https://tailwindcss.com/docs/visibility
+    add(
+        {
+            '.visible': {visibility: 'visible'},
+            '.invisible': {visibility: 'hidden'}
+        },
+        {group: 'visibility'}
+    );
+
+    // https://tailwindcss.com/docs/z-index
+    dynamic('z', utility =>
+        utility
+            .body(theme('zIndex'))
+            .int()
+            .variable()
+            .property('z-index')
+            ?.meta('utilities', 'zIndex')
+    );
 
     dynamic('bg', utility =>
         utility
@@ -240,108 +304,3 @@ export default (({
         );
     });
 }) as Plugin;
-
-/*
-export const a = () =>
-    ({
-
-        // https://tailwindcss.com/docs/position
-        [`(${position.join('|')})$`]: propertyStatic(
-            'position',
-            Object.fromEntries(position.map((value) => [value, value]))
-        ),
-
-        // https://tailwindcss.com/docs/top-right-bottom-left
-        inset: (utility, { theme }) =>
-            utility
-                .body(theme('inset'))
-                .sqb()
-                .spacing()
-                .ratio()
-                .dimension()
-                .variable()
-                .callback(() => {
-                    switch (utility.id) {
-                        case 'top':
-                        case 'right':
-                        case 'bottom':
-                        case 'left':
-                            return utility
-                                .property(utility.id)
-                                ?.meta('utilities', 'inset', undefined, 4);
-                        case 'inset-x':
-                            return utility
-                                .property(['right', 'left'])
-                                ?.meta('utilities', 'inset', undefined, 3);
-                        case 'inset-y':
-                            return utility
-                                .property(['top', 'bottom'])
-                                ?.meta('utilities', 'inset', undefined, 2);
-                        case 'inset':
-                            return utility
-                                .property(['top', 'right', 'bottom', 'left'])
-                                ?.meta('utilities', 'inset', undefined, 1);
-                    }
-                }),
-
-        // https://tailwindcss.com/docs/visibility
-        '(in)?visible$': propertyStatic('visibility', {
-            visible: 'visible',
-            invisible: 'hidden',
-        }),
-
-        // https://tailwindcss.com/docs/z-index
-        z: (utility, { theme }) =>
-            utility
-                .body(theme('zIndex'))
-                .int()
-                .variable()
-                .property('z-index')
-                ?.meta('utilities', 'zIndex'),
-    } as Record<string, UtilityGenerator>);
-
-function propertyStatic(
-    property: string,
-    map: {
-        [key: string]: unknown;
-    }
-): UtilityGenerator {
-    return (util) =>
-        util
-            .static(map)
-            .property(dashify(property))
-            ?.meta(
-                'utilities',
-                property,
-                undefined,
-                Object.keys(map).indexOf(util.rest) + 1
-            );
-}
-
-function propertyBody(
-    map: {
-        [key: string]: unknown;
-    },
-    property?: string
-): UtilityGenerator {
-    return (util) =>
-        util
-            .body(map)
-            .property(property ? dashify(property) : util.id)
-            ?.meta(
-                'utilities',
-                property || util.id,
-                undefined,
-                Object.keys(map).indexOf(util.rest) + 1
-            );
-}
-
-const display = ;
-
-
-const overflow = ;
-
-const overscroll = ['auto', 'contain', 'none'];
-
-const position = ['static', 'fixed', 'absolute', 'relative', 'sticky'];
-*/

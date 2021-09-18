@@ -19,6 +19,7 @@ export class Processor {
     dynamicPlugins: Map<string, UtilityGenerator> = new Map();
     _variants: Map<string, VariantGenerator> = new Map();
     count = 0;
+    cache: Set<string> = new Set();
     _config: Config;
     pluginUtils: PluginUtils = {
         addDynamic: (key, generator, options) =>
@@ -127,11 +128,14 @@ export class Processor {
         const ignored: string[] = [];
         const styleSheet = new StyleSheet();
         for (const className of classes) {
-            const result = this.extract(className);
-            if (result) {
-                success.push(className);
-                styleSheet.add(...result);
-            } else ignored.push(className);
+            if (this.cache.has(className)) {
+                const result = this.extract(className);
+                if (result) {
+                    success.push(className);
+                    styleSheet.add(...result);
+                    this.cache.add(className);
+                } else ignored.push(className);
+            }
         }
         styleSheet.variantOrder = this._config.variantOrder ?? [];
         return {
