@@ -1,0 +1,71 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`utilities box-decoration-break 1`] = `
+".decoration-slice {
+  box-decoration-break: slice
+}
+.decoration-clone {
+  box-decoration-break: clone
+}"
+`;
+
+exports[`utilities container 1`] = `
+".container {
+  width: 100%
+}
+@media (min-width:640px) {
+  .container {
+    width: 640px
+  }
+}
+@media (min-width:768px) {
+  .container {
+    width: 768px
+  }
+}
+@media (min-width:1024px) {
+  .container {
+    width: 1024px
+  }
+}
+@media (min-width:1280px) {
+  .container {
+    width: 1280px
+  }
+}
+@media (min-width:1536px) {
+  .container {
+    width: 1536px
+  }
+}"
+`;
+
+exports[`utilities display 1`] = `
+".flex {
+  display: flex
+}
+.grid {
+  display: grid
+}"
+`;
+
+exports[`utilities dynamic 1`] = `
+Array [
+  "bg",
+  "h|w",
+  "space-(x|y)",
+  "grid-(cols|rows)",
+]
+`;
+
+exports[`utilities grid-cols 1`] = `
+".grid-cols-10 {
+  grid-template-columns: repeat(10,minmax(0,1fr))
+}"
+`;
+
+exports[`utilities height 1`] = `
+".h-7 {
+  height: 1.75rem
+}"
+`;

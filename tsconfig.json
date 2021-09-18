@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "target": "ES2015",
+        "lib": ["dom", "es2017", "dom.iterable", "scripthost"],
+        "module": "esnext",
+        "moduleResolution": "Node",
+        "strict": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
+        "types": ["node", "jest"]
+    },
+    "include": ["./src", "./example"],
+    "exclude": ["./test", "dist"]
+}
