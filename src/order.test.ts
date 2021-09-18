@@ -1,4 +1,4 @@
-import { layerOrder, pluginOrder, variantOrder } from './order';
+import {layerOrder, pluginOrder, variantOrder} from './order'
 
 describe('Order', () => {
     test('layerOrder', () => {
@@ -9,12 +9,12 @@ Array [
   "shortcuts",
   "utilities",
 ]
-`);
-    });
+`)
+    })
     test('pluginOrder', () => {
-        expect(pluginOrder).toMatchSnapshot();
-    });
+        expect(pluginOrder).toMatchSnapshot()
+    })
     test('variantOrder', () => {
-        expect(variantOrder).toMatchSnapshot();
-    });
-});
+        expect(variantOrder).toMatchSnapshot()
+    })
+})

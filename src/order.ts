@@ -57,10 +57,10 @@ export const variantOrder = [
     'group-active',
     'group-visited',
     'motion-safe',
-    'motion-reduce',
-];
+    'motion-reduce'
+]
 
-export const layerOrder = ['base', 'components', 'shortcuts', 'utilities'];
+export const layerOrder = ['base', 'components', 'shortcuts', 'utilities']
 
 export enum pluginOrder {
     'container' = 100,
@@ -230,5 +230,5 @@ export enum pluginOrder {
     'backdropInvert' = 13800,
     'backdropOpacity' = 13900,
     'backdropSaturate' = 14000,
-    'backdropSepia' = 14100,
+    'backdropSepia' = 14100
 }

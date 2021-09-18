@@ -1,4 +1,4 @@
-import { baseConfig } from './config';
+import {baseConfig} from './config'
 
 describe('Config', () => {
     test('baseConfig', () => {
@@ -8,7 +8,7 @@ describe('Config', () => {
                 darkMode: 'class',
                 plugins: expect.any(Array),
                 prefixer: true,
-                variantOrder: expect.any(Array),
+                variantOrder: expect.any(Array)
             },
             `
             Object {
@@ -49,6 +49,6 @@ describe('Config', () => {
               "variantOrder": Any<Array>,
             }
         `
-        );
-    });
-});
+        )
+    })
+})

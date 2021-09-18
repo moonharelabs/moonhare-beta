@@ -1,5 +1,5 @@
-import { parseCSS, StyleSheet } from './style';
-import CleanCSS from 'clean-css';
+import {parseCSS, StyleSheet} from './style'
+import CleanCSS from 'clean-css'
 
 describe('Styles', () => {
     test('parseCSS', () => {
@@ -11,10 +11,10 @@ describe('Styles', () => {
                 marginRight: undefined,
                 marginLeft: undefined,
                 '@media (min-width: 640px)': {
-                    width: '640px',
+                    width: '640px'
                     //paddingLeft: undefined,
                     //paddingRight: undefined,
-                },
+                }
 
                 //'@media (min-width: 768px)': {
                 //    width: '768px',
@@ -37,6 +37,6 @@ describe('Styles', () => {
                 //    paddingRight: undefined,
                 //},
             }).length
-        ).toMatchInlineSnapshot(`2`);
-    });
-});
+        ).toMatchInlineSnapshot(`2`)
+    })
+})
