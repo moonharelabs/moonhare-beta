@@ -8,6 +8,7 @@
     "unpkg": "dist/index.umd.js",
     "module": "dist/index.esm.js",
     "jsdelivr": "dist/index.umd.js",
+    "browser": "dist/index.umd.js",
     "umd:main": "dist/index.umd.js",
     "exports": {
         ".": [
@@ -24,8 +25,11 @@
         "pnpm": ">=3"
     },
     "devDependencies": {
+        "@rollup/plugin-commonjs": "^20.0.0",
+        "@rollup/plugin-node-resolve": "^13.0.4",
         "@rollup/plugin-replace": "^3.0.0",
         "@rollup/plugin-sucrase": "^4.0.0",
+        "@rollup/plugin-typescript": "^8.2.5",
         "@types/clean-css": "^4.2.5",
         "@types/jest": "^27.0.1",
         "@types/minimist": "^1.2.2",
@@ -39,7 +43,9 @@
         "eslint-config-prettier": "^8.3.0",
         "eslint-plugin-prettier": "^4.0.0",
         "jest": "^27.2.0",
+        "prettier": "^2.4.1",
         "rollup": "^2.56.3",
+        "rollup-plugin-terser": "^7.0.2",
         "ts-jest": "^27.0.5",
         "tslib": "^2.3.1",
         "typescript": "^4.4.3"
@@ -49,11 +55,10 @@
     },
     "scripts": {
         "dev": "rollup -cw",
-        "tsd": "tsc -p ./src --emitDeclarationOnly",
+        "tsd": "tsc --emitDeclarationOnly",
         "lint:fix": "pnpm run lint -- --fix",
         "typecheck": "tsc --noEmit",
         "build": "rollup -c && pnpm tsd",
-        "build:prod": "cross-env NODE_ENV=production pnpm build",
         "test": "npm run lint && npm run test:unit",
         "lint": "eslint ./src --ext .ts",
         "test:unit": "jest",
