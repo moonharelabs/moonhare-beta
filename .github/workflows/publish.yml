@@ -21,6 +21,7 @@ jobs:
               with:
                   cache: 'pnpm'
             - run: pnpm install
+            - run: pnpm format
             - run: pnpm build
             - run: |
                   git config user.name github-actions
