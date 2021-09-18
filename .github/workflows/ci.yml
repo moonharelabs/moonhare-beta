@@ -5,9 +5,9 @@ name: Node.js CI
 
 on:
     push:
-        branches: dev
+        branches: [dev]
     pull_request:
-        branches: dev
+        branches: [dev]
 
 jobs:
     build:
@@ -20,20 +20,14 @@ jobs:
 
         steps:
             - uses: actions/checkout@v2
+            - uses: pnpm/action-setup@v2.0.1
+              with:
+                  version: 6.15.1
             - name: Use Node.js ${{ matrix.node-version }}
               uses: actions/setup-node@v2
               with:
                   node-version: ${{ matrix.node-version }}
-            - name: Cache .pnpm-store
-              uses: actions/cache@v1
-              with:
-                  path: ~/.pnpm-store
-                  key: ${{ runner.os }}-node${{ matrix.node-version }}-${{ hashFiles('**/pnpm-lock.yaml') }}
-            - name: Install pnpm
-              run: curl -f https://get.pnpm.io/v6.14.js | node - add --global pnpm@6
-            - name: Install
-              run: pnpm install
-            - name: Build
-              run: pnpm build
-            - name: Test
-              run: pnpm test
+                  cache: 'pnpm'
+            - run: pnpm install
+            - run: pnpm build
+            - run: pnpm test
