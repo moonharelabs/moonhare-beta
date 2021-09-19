@@ -1,4 +1,4 @@
-import {Plugin} from '../interfaces';
+import type {Plugin} from '../interfaces';
 
 export default (({addBase, theme}) => {
     addBase({

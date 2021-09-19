@@ -1,3 +1,3 @@
-import { Plugin } from '../interfaces';
+import type { Plugin } from '../interfaces';
 declare const _default: Plugin;
 export default _default;

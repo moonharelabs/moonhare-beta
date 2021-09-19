@@ -24,8 +24,8 @@ jobs:
               with:
                   version: 6.15.1
             - run: pnpm install
-            - run: pnpm run format
-            - run: pnpm run lint
+            - run: pnpm format
+            - run: pnpm lint
             - name: Use Node.js ${{ matrix.node-version }}
               uses: actions/setup-node@v2
               with:

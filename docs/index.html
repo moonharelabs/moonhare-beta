@@ -1,0 +1,278 @@
+<script type="text/javascript" src="moonhare.js"></script>
+<div class="wrapper">
+    <div class="editor">
+        <div class="editor__code">
+            <div id="editorCode"></div>
+        </div>
+
+        <div class="editor__preview">
+            <iframe
+                id="editorPreview"
+                src="about:blank"
+                frameborder="0"
+            ></iframe>
+        </div>
+    </div>
+</div>
+<script
+    type="text/javascript"
+    src="https://cdn.jsdelivr.net/npm/monaco-editor/min/vs/loader.js"
+></script>
+
+<style>
+    html,
+    body {
+        margin: 0;
+        padding: 0;
+    }
+
+    .wrapper {
+        display: flex;
+        min-height: 95vh;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .editor {
+        width: 100%;
+        max-width: 1200px;
+        margin: 50px auto 40px;
+        height: 500px;
+        display: flex;
+        box-shadow: 0 7px 7px rgba(0, 0, 0, 0.1),
+            0 -2px 3px rgba(0, 0, 0, 0.125);
+    }
+
+    .editor__code {
+        position: relative;
+        border: none;
+        flex-basis: 50%;
+    }
+
+    .editor__preview {
+        position: relative;
+        flex-basis: 50%;
+    }
+
+    .editor__code > *,
+    .editor__preview > * {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+    }
+</style>
+<script>
+    // Initial data
+    const HTML_CODE = `<ul class="space-y-2">
+    <li>
+        <ul class="grid grid-cols-10 h-7">
+            <li class="bg-red-50"></li>
+            <li class="bg-red-100"></li>
+            <li class="bg-red-200"></li>
+            <li class="bg-red-300"></li>
+            <li class="bg-red-400"></li>
+            <li class="bg-red-500"></li>
+            <li class="bg-red-600"></li>
+            <li class="bg-red-700"></li>
+            <li class="bg-red-800"></li>
+            <li class="bg-red-900"></li>
+        </ul>
+    </li>
+    <li>
+        <ul class="grid grid-cols-10 h-7">
+            <li class="bg-yellow-50"></li>
+            <li class="bg-yellow-100"></li>
+            <li class="bg-yellow-200"></li>
+            <li class="bg-yellow-300"></li>
+            <li class="bg-yellow-400"></li>
+            <li class="bg-yellow-500"></li>
+            <li class="bg-yellow-600"></li>
+            <li class="bg-yellow-700"></li>
+            <li class="bg-yellow-800"></li>
+            <li class="bg-yellow-900"></li>
+        </ul>
+    </li>
+    <li>
+        <ul class="grid grid-cols-10 h-7">
+            <li class="bg-green-50"></li>
+            <li class="bg-green-100"></li>
+            <li class="bg-green-200"></li>
+            <li class="bg-green-300"></li>
+            <li class="bg-green-400"></li>
+            <li class="bg-green-500"></li>
+            <li class="bg-green-600"></li>
+            <li class="bg-green-700"></li>
+            <li class="bg-green-800"></li>
+            <li class="bg-green-900"></li>
+        </ul>
+    </li>
+    <li>
+        <ul class="grid grid-cols-10 h-7">
+            <li class="bg-blue-50"></li>
+            <li class="bg-blue-100"></li>
+            <li class="bg-blue-200"></li>
+            <li class="bg-blue-300"></li>
+            <li class="bg-blue-400"></li>
+            <li class="bg-blue-500"></li>
+            <li class="bg-blue-600"></li>
+            <li class="bg-blue-700"></li>
+            <li class="bg-blue-800"></li>
+            <li class="bg-blue-900"></li>
+        </ul>
+    </li>
+    <li>
+        <ul class="grid grid-cols-10 h-7">
+            <li class="bg-purple-50"></li>
+            <li class="bg-purple-100"></li>
+            <li class="bg-purple-200"></li>
+            <li class="bg-purple-300"></li>
+            <li class="bg-purple-400"></li>
+            <li class="bg-purple-500"></li>
+            <li class="bg-purple-600"></li>
+            <li class="bg-purple-700"></li>
+            <li class="bg-purple-800"></li>
+            <li class="bg-purple-900"></li>
+        </ul>
+    </li>
+    <li>
+        <ul class="grid grid-cols-10 h-7">
+            <li class="bg-pink-50"></li>
+            <li class="bg-pink-100"></li>
+            <li class="bg-pink-200"></li>
+            <li class="bg-pink-300"></li>
+            <li class="bg-pink-400"></li>
+            <li class="bg-pink-500"></li>
+            <li class="bg-pink-600"></li>
+            <li class="bg-pink-700"></li>
+            <li class="bg-pink-800"></li>
+            <li class="bg-pink-900"></li>
+        </ul>
+    </li>
+</ul>
+`;
+    function _nullishCoalesce(lhs, rhsFn) {
+        if (lhs != null) {
+            return lhs;
+        } else {
+            return rhsFn();
+        }
+    }
+    function _optionalChain(ops) {
+        let lastAccessLHS = undefined;
+        let value = ops[0];
+        let i = 1;
+        while (i < ops.length) {
+            const op = ops[i];
+            const fn = ops[i + 1];
+            i += 2;
+            if (
+                (op === 'optionalAccess' || op === 'optionalCall') &&
+                value == null
+            ) {
+                return undefined;
+            }
+            if (op === 'access' || op === 'optionalAccess') {
+                lastAccessLHS = value;
+                value = fn(value);
+            } else if (op === 'call' || op === 'optionalCall') {
+                value = fn((...args) => value.call(lastAccessLHS, ...args));
+                lastAccessLHS = undefined;
+            }
+        }
+        return value;
+    }
+    function parseClasses(html) {
+        // Match all class properties
+        const output = [];
+        const regex =
+            /class(Name)?\s*=\s*{`[^]+`}|class(Name)?\s*=\s*"[^"]+"|class(Name)?\s*=\s*'[^']+'|class(Name)?\s*=\s*[^>\s]+/gim;
+        let match;
+        while ((match = regex.exec(html))) {
+            if (match) {
+                const raw = match[0];
+                const sep = raw.indexOf('=');
+                let value = raw.slice(sep + 1).trim();
+                let start =
+                    match.index +
+                    sep +
+                    1 +
+                    _nullishCoalesce(
+                        _optionalChain([
+                            html,
+                            'access',
+                            _ => _.slice,
+                            'call',
+                            _2 => _2(sep + 1),
+                            'access',
+                            _3 => _3.match,
+                            'call',
+                            _4 => _4(/[^'"]/),
+                            'optionalAccess',
+                            _5 => _5.index
+                        ]),
+                        () => 0
+                    );
+                let end = regex.lastIndex;
+                let first = value.charAt(0);
+                while (['"', "'", '`', '{'].includes(first)) {
+                    value = value.slice(1, -1);
+                    first = value.charAt(0);
+                    end--;
+                    start++;
+                }
+                output.push(value);
+            }
+        }
+        return output;
+    }
+    // Elements
+    const editorCode = document.getElementById('editorCode');
+    const editorPreview =
+        document.getElementById('editorPreview').contentWindow.document;
+    const preflight = new moonHare.Processor()
+        .preflight()
+        .map(style => style.build())
+        .join('');
+
+    editorPreview.body.innerHTML = `<style>${preflight}${new moonHare.Processor()
+        .interpret(parseClasses(HTML_CODE).join(' '))
+        .styleSheet.build()}</style>${HTML_CODE}`;
+    
+    // Monaco loader
+    require.config({
+        paths: {vs: 'https://cdn.jsdelivr.net/npm/monaco-editor/min/vs'}
+    });
+
+    window.MonacoEnvironment = {
+        getWorkerUrl: function (workerId, label) {
+            return `data:text/javascript;charset=utf-8,${encodeURIComponent(`
+        self.MonacoEnvironment = {
+          baseUrl: 'https://cdn.jsdelivr.net/npm/monaco-editor/min/'
+        };
+        importScripts('https://cdn.jsdelivr.net/npm/monaco-editor/min/vs/base/worker/workerMain.js');`)}`;
+        }
+    };
+
+    // Monaco init
+    require(['vs/editor/editor.main'], function () {
+        createEditor(editorCode);
+    });
+
+    function createEditor(editorContainer) {
+        let editor = monaco.editor.create(editorContainer, {
+            value: HTML_CODE,
+            language: 'html',
+            minimap: {enabled: false},
+            automaticLayout: true,
+            contextmenu: false,
+            fontSize: 12,
+        });
+
+        editor.onDidChangeModelContent(() => {
+            editorPreview.body.innerHTML = `<style>${preflight}${new moonHare.Processor()
+                .interpret(parseClasses(editor.getValue()).join(' '))
+                .styleSheet.build()}</style>${editor.getValue()}`;
+        });
+    }
+</script>

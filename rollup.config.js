@@ -1,21 +1,31 @@
-import {terser} from 'rollup-plugin-terser';
 import typescript from '@rollup/plugin-typescript';
+import {terser} from 'rollup-plugin-terser';
 import pkg from './package.json';
 
-export default {
-    input: 'src/index.ts',
-    plugins: [
-        terser(),
-        typescript() // so Rollup can convert TypeScript to JavaScript
-    ],
-    output: [
-        {file: pkg.main, format: 'cjs', exports: 'named'},
-        {file: pkg.module, format: 'es'},
-        {
-            file: pkg.browser,
-            format: 'umd',
-            name: 'moonHare',
-            exports: 'named'
-        }
-    ]
-};
+export default [
+    {
+        input: 'src/index.ts',
+        plugins: [terser(), typescript()],
+        output: [
+            {file: pkg.main, format: 'cjs', sourcemap: true},
+            {file: pkg.module, format: 'es', sourcemap: true},
+            {
+                name: 'moonHare',
+                file: pkg.browser,
+                format: 'umd',
+                sourcemap: true
+            },
+            {
+                name: 'moonHare',
+                file: 'docs/moonhare.js',
+                format: 'umd',
+                sourcemap: true
+            }
+        ]
+    },
+    {
+        input: 'src/cli.ts',
+        plugins: [terser(), typescript()],
+        output: [{file: 'cli.js', format: 'cjs', sourcemap: true}]
+    }
+];

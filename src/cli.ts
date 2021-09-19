@@ -1,6 +1,6 @@
 import minimist from 'minimist';
 import {resolve} from 'path';
-import {globbySync} from 'globby';
+import * as glob from 'glob';
 import Processor from '.';
 import {readFileSync, writeFile} from 'fs';
 
@@ -11,11 +11,16 @@ const processor = new Processor(configFile ? require(configFile) : undefined);
 
 const patterns = args._.concat(
     processor.config('extract.include', []) as string[]
-).concat(
-    (processor.config('extract.exclude', []) as string[]).map(i => '!' + i)
 );
 
-const matchFiles = globbySync(patterns);
+const matchFiles: string[] = [];
+patterns.forEach(pattern =>
+    matchFiles.push(
+        ...glob.sync(pattern, {
+            ignore: processor.config('extract.exclude', []) as string[]
+        })
+    )
+);
 
 function parseClasses(html: string): string[] {
     // Match all class properties

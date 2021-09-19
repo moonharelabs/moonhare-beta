@@ -1,18 +1,18 @@
 {
     "compilerOptions": {
+        "noImplicitAny": true,
+        "module": "ESNext",
         "target": "ES2015",
-        "lib": ["dom", "es2017", "dom.iterable", "scripthost"],
-        "module": "esnext",
-        "moduleResolution": "Node",
         "strict": true,
         "esModuleInterop": true,
         "skipLibCheck": true,
         "forceConsistentCasingInFileNames": true,
-        "types": ["node", "jest"],
+        "sourceMap": true,
         "declaration": true,
-        "declarationDir": "./dist/types",
-        "outDir": "./dist",
-        "noImplicitAny": true
+        "outDir": "./dist/types",
+        "lib": ["ES2018", "DOM"],
+        "moduleResolution": "Node",
+        "types": ["node", "jest", "csstype"]
     },
     "include": ["src"],
     "exclude": ["node_modules", "**/*.test.ts"]

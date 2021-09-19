@@ -1,6 +1,6 @@
 import { Utility } from './util';
-export * from './style';
-import { Container, Style, CSS } from './style';
+import type { Value, Meta, Block, CSS, LayerName, Declaration, Container, Style, InlineAtRule, StyleSheet } from './style';
+export type { Value, Meta, Block, CSS, LayerName, Declaration, Container, Style, InlineAtRule, StyleSheet };
 export declare type Output = Container | Container[] | undefined;
 export declare type UtilityGenerator = (utility: Utility, utils: PluginUtils) => Output;
 export declare type VariantGenerator = (tools: {

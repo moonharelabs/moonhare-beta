@@ -4,9 +4,12 @@ import type {
     UtilityGenerator,
     PluginUtils,
     VariantGenerator,
-    PluginUtilOptions
+    PluginUtilOptions,
+    Block,
+    Container,
+    CSS
 } from './interfaces';
-import {Block, Container, CSS, parseCSS, Style, StyleSheet} from './style';
+import {parseCSS, Style, StyleSheet} from './style';
 import {deepExtend, escape} from './tools';
 import {Utility} from './util';
 
@@ -34,7 +37,7 @@ export class Processor {
         prefix: selector => this.prefix(selector),
         theme: (path, defaultValue) => this.theme(path, defaultValue),
         config: (path, defaultValue) => this.config(path, defaultValue),
-        variants: (path, defaultValue) => [...this.variants(path, defaultValue)]
+        variants: (path, defaultValue) => this.variants(path, defaultValue)
     };
 
     constructor(config: Config = {}) {
@@ -63,25 +66,24 @@ export class Processor {
                 if (utility.matchVariant(variant)) matched = true;
             }
         }
-
         for (const [expr, {className: realClass, css, options}] of this
             .staticPlugins) {
             if (
                 new RegExp(expr).test(
-                    (utility.isNegative ? '-' : '') + utility.raw
+                    escape((utility.isNegative ? '-' : '') + utility.raw)
                 )
             ) {
-                className = realClass.replace(
+                const newClass = realClass.replace(
                     '.' + escape((utility.isNegative ? '-' : '') + utility.raw),
-                    '.' + className
+                    '.' + escape(className)
                 );
                 styles = parseCSS(
-                    options.respectPrefix ? this.prefix(className) : className,
+                    options.respectPrefix ? this.prefix(newClass) : newClass,
                     css
                 );
                 if (options.respectImportant && this._config.important)
                     styles.forEach(style => (style.important = true));
-                return styles.map(style =>
+                styles = styles.map(style =>
                     style.meta(
                         options.layer,
                         options.group,
@@ -92,7 +94,6 @@ export class Processor {
                 break;
             }
         }
-
         if (!styles)
             for (const [expr, generator] of this.dynamicPlugins) {
                 if (utility.matchPlugin(expr)) {
@@ -128,7 +129,7 @@ export class Processor {
         const ignored: string[] = [];
         const styleSheet = new StyleSheet();
         for (const className of classes) {
-            if (this.cache.has(className)) {
+            if (!this.cache.has(className)) {
                 const result = this.extract(className);
                 if (result) {
                     success.push(className);
@@ -171,7 +172,7 @@ export class Processor {
     }
 
     variants(path: string, defaultValue?: string[]) {
-        return this._variants.keys();
+        return Array.from(this._variants.keys());
     }
 
     private addStatic(
@@ -287,7 +288,8 @@ export class Processor {
                     styles.meta(
                         options.layer,
                         options.group,
-                        options.group ? undefined : this.count++,
+                        styles._meta.order ||
+                            (options.group ? undefined : this.count++),
                         undefined
                     );
                     if (options.respectImportant && this._config.important)

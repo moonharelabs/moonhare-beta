@@ -1,0 +1,67 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Processor sample 1`] = `
+".container {
+  width: 100%
+}
+@media (min-width:640px) {
+  .container {
+    width: 640px
+  }
+}
+@media (min-width:768px) {
+  .container {
+    width: 768px
+  }
+}
+@media (min-width:1024px) {
+  .container {
+    width: 1024px
+  }
+}
+@media (min-width:1280px) {
+  .container {
+    width: 1280px
+  }
+}
+@media (min-width:1536px) {
+  .container {
+    width: 1536px
+  }
+}
+.object-cover {
+  object-position: cover
+}
+.\\\\!-z-30 {
+  z-index: -30!important
+}
+.-\\\\!inset-4 {
+  top: -1rem!important;
+  right: -1rem!important;
+  bottom: -1rem!important;
+  left: -1rem!important
+}
+.decoration-slice {
+  box-decoration-break: slice
+}
+.box-border {
+  box-sizing: border-box
+}
+.clear-left {
+  clear: left
+}
+.overflow-hidden {
+  overflow: hidden
+}
+.static {
+  position: static
+}
+.isolate {
+  isolation: isolate
+}
+@media (prefers-color-scheme:dark) {
+  .\\\\@dark\\\\:float-right {
+    float: right
+  }
+}"
+`;

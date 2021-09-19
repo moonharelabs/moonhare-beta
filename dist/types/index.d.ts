@@ -1,5 +1,5 @@
-import type { Config, UtilityGenerator, PluginUtils, VariantGenerator, PluginUtilOptions } from './interfaces';
-import { Block, Container, CSS, StyleSheet } from './style';
+import type { Config, UtilityGenerator, PluginUtils, VariantGenerator, PluginUtilOptions, Block, Container, CSS } from './interfaces';
+import { StyleSheet } from './style';
 export declare class Processor {
     staticPlugins: Map<string, {
         className: string;
@@ -10,6 +10,7 @@ export declare class Processor {
     dynamicPlugins: Map<string, UtilityGenerator>;
     _variants: Map<string, VariantGenerator>;
     count: number;
+    cache: Set<string>;
     _config: Config;
     pluginUtils: PluginUtils;
     constructor(config?: Config);
@@ -25,7 +26,7 @@ export declare class Processor {
     prefix(selector: string): string;
     config<T>(path: string, defaultValue?: T): T;
     theme<T>(path: string, defaultValue?: T): T;
-    variants(path: string, defaultValue?: string[]): IterableIterator<string>;
+    variants(path: string, defaultValue?: string[]): string[];
     private addStatic;
     addUtilities(utils: CSS | CSS[], options?: string[] | PluginUtilOptions): void;
     addComponents(utils: CSS | CSS[], options?: string[] | PluginUtilOptions): void;

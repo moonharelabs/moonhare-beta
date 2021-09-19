@@ -1,4 +1,4 @@
-import {Plugin} from '../interfaces';
+import type {Plugin} from '../interfaces';
 import {Block, dashify} from '../style';
 
 export default (({
@@ -51,7 +51,7 @@ export default (({
         );
     }
 
-    /** @category LAYOUT */ 
+    /** @category LAYOUT */
 
     // https://tailwindcss.com/docs/container
     component(
@@ -247,6 +247,7 @@ export default (({
             .property(name)
             ?.meta('utilities', name, undefined);
     });
+
     dynamic('space-(x|y)', utility =>
         utility
             .body(theme('space'))

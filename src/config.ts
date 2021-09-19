@@ -43,3 +43,5 @@ export const baseConfig: Config = {
     variantOrder: variantOrder,
     plugins: [defaultPlugin]
 };
+
+export default baseConfig;

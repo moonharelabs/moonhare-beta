@@ -1,5 +1,4 @@
-import {parseCSS, StyleSheet} from './style';
-import CleanCSS from 'clean-css';
+import {parseCSS} from './style';
 
 describe('Styles', () => {
     test('parseCSS', () => {

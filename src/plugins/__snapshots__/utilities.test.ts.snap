@@ -9,6 +9,30 @@ exports[`utilities box-decoration-break 1`] = `
 }"
 `;
 
+exports[`utilities box-sizing 1`] = `
+".box-border {
+  box-sizing: border-box
+}
+.box-content {
+  box-sizing: content-box
+}"
+`;
+
+exports[`utilities clear 1`] = `
+".clear-left {
+  clear: left
+}
+.clear-right {
+  clear: right
+}
+.clear-both {
+  clear: both
+}
+.clear-none {
+  clear: none
+}"
+`;
+
 exports[`utilities container 1`] = `
 ".container {
   width: 100%
@@ -40,9 +64,115 @@ exports[`utilities container 1`] = `
 }"
 `;
 
-exports[`utilities container 2`] = `
+exports[`utilities container with center 1`] = `
+".container {
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto
+}
+@media (min-width:640px) {
+  .container {
+    width: 640px
+  }
+}
+@media (min-width:768px) {
+  .container {
+    width: 768px
+  }
+}
+@media (min-width:1024px) {
+  .container {
+    width: 1024px
+  }
+}
+@media (min-width:1280px) {
+  .container {
+    width: 1280px
+  }
+}
+@media (min-width:1536px) {
+  .container {
+    width: 1536px
+  }
+}"
+`;
+
+exports[`utilities container with custom breakpoints 1`] = `
 ".container {
   width: 100%
+}
+@media (min-width:768px) {
+  .container {
+    width: 768px
+  }
+}
+@media (min-width:1280px) {
+  .container {
+    width: 1280px
+  }
+}"
+`;
+
+exports[`utilities container with custom breakpoints and padding 1`] = `
+".container {
+  width: 100%;
+  padding-left: 4rem;
+  padding-right: 4rem
+}
+@media (min-width:768px) {
+  .container {
+    width: 768px;
+    padding-left: 2rem;
+    padding-right: 2rem
+  }
+}
+@media (min-width:1280px) {
+  .container {
+    width: 1280px;
+    padding-left: 8rem;
+    padding-right: 8rem
+  }
+}"
+`;
+
+exports[`utilities container with padding 1`] = `
+".container {
+  width: 100%;
+  padding-left: 2rem;
+  padding-right: 2rem
+}
+@media (min-width:640px) {
+  .container {
+    width: 640px
+  }
+}
+@media (min-width:768px) {
+  .container {
+    width: 768px
+  }
+}
+@media (min-width:1024px) {
+  .container {
+    width: 1024px
+  }
+}
+@media (min-width:1280px) {
+  .container {
+    width: 1280px
+  }
+}
+@media (min-width:1536px) {
+  .container {
+    width: 1536px
+  }
+}"
+`;
+
+exports[`utilities container with padding 2`] = `
+".container {
+  width: 100%;
+  padding-left: 4rem;
+  padding-right: 4rem
 }
 @media (min-width:640px) {
   .container {
@@ -72,21 +202,93 @@ exports[`utilities container 2`] = `
 `;
 
 exports[`utilities display 1`] = `
-".flex {
+".block {
+  display: block
+}
+.inline-block {
+  display: inline-block
+}
+.inline {
+  display: inline
+}
+.flex {
   display: flex
+}
+.inline-flex {
+  display: inline-flex
+}
+.table {
+  display: table
+}
+.inline-table {
+  display: inline-table
+}
+.table-caption {
+  display: table-caption
+}
+.table-cell {
+  display: table-cell
+}
+.table-column {
+  display: table-column
+}
+.table-column-group {
+  display: table-column-group
+}
+.table-footer-group {
+  display: table-footer-group
+}
+.table-header-group {
+  display: table-header-group
+}
+.table-row-group {
+  display: table-row-group
+}
+.table-row {
+  display: table-row
+}
+.flow-root {
+  display: flow-root
 }
 .grid {
   display: grid
+}
+.inline-grid {
+  display: inline-grid
+}
+.contents {
+  display: contents
+}
+.list-item {
+  display: list-item
+}
+.hidden {
+  display: none
 }"
 `;
 
 exports[`utilities dynamic 1`] = `
 Array [
+  "object",
+  "top|right|bottom|left|inset(-x|-y)?",
+  "z",
   "bg",
   "h|w",
   "space-(x|y)",
   "grid-(cols|rows)",
 ]
+`;
+
+exports[`utilities float 1`] = `
+".float-right {
+  float: right
+}
+.float-left {
+  float: left
+}
+.float-none {
+  float: none
+}"
 `;
 
 exports[`utilities grid-cols 1`] = `
@@ -98,5 +300,62 @@ exports[`utilities grid-cols 1`] = `
 exports[`utilities height 1`] = `
 ".h-7 {
   height: 1.75rem
+}"
+`;
+
+exports[`utilities isolation 1`] = `
+".isolate {
+  isolation: isolate
+}
+.isolation-auto {
+  isolation: auto
+}"
+`;
+
+exports[`utilities object-fit 1`] = `
+".object-contain {
+  object-position: contain
+}
+.object-cover {
+  object-position: cover
+}
+.object-fill {
+  object-position: fill
+}
+.object-none {
+  object-position: none
+}
+.object-scale-down {
+  object-position: scale down
+}"
+`;
+
+exports[`utilities object-position 1`] = `
+".object-bottom {
+  object-position: bottom
+}
+.object-center {
+  object-position: center
+}
+.object-left {
+  object-position: left
+}
+.object-right {
+  object-position: right
+}
+.object-top {
+  object-position: top
+}
+.object-left-top {
+  object-position: left top
+}
+.object-left-bottom {
+  object-position: left bottom
+}
+.object-right-top {
+  object-position: right top
+}
+.object-right-bottom {
+  object-position: right bottom
 }"
 `;

@@ -1,6 +1,29 @@
 import {Utility} from './util';
-export * from './style';
-import {Container, Style, CSS} from './style';
+import type {
+    Value,
+    Meta,
+    Block,
+    CSS,
+    LayerName,
+    Declaration,
+    Container,
+    Style,
+    InlineAtRule,
+    StyleSheet
+} from './style';
+
+export type {
+    Value,
+    Meta,
+    Block,
+    CSS,
+    LayerName,
+    Declaration,
+    Container,
+    Style,
+    InlineAtRule,
+    StyleSheet
+};
 
 export type Output = Container | Container[] | undefined;
 

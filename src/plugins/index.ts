@@ -1,6 +1,5 @@
-import {PluginUtils} from '../interfaces';
+import type {PluginUtils} from '../interfaces';
 import preflight from './preflight';
-
 import utilities from './utilities';
 import variants from './variants';
 

@@ -1,4 +1,4 @@
-import { UtilityGenerator } from './interfaces';
+import type { UtilityGenerator } from './interfaces';
 export declare function propertyStatic(property: string, map: {
     [key: string]: unknown;
 }): UtilityGenerator;

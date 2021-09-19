@@ -1,4 +1,4 @@
-import {VariantGenerator, Plugin} from '../interfaces';
+import type {VariantGenerator, Plugin} from '../interfaces';
 
 type RawBreakpoint = {raw: string};
 type MinMaxBreakpoint = {min?: string; max?: string};
@@ -161,7 +161,7 @@ export default (({addVariant, theme}) => {
     );
     ['dark', 'light'].forEach(type => {
         const at: VariantGenerator = ({style}) =>
-                style.atRules.push(`'@media (prefers-color-scheme: ${type})`),
+                style.atRules.push(`@media (prefers-color-scheme: ${type})`),
             dot: VariantGenerator = ({style}) =>
                 style.prepend.push(`.${type} `);
         addVariant('@' + type, at);

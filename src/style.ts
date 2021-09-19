@@ -33,7 +33,9 @@ export class Declaration {
     }
 
     build() {
-        return `${this.property}:${this.value}`;
+        return `${this.property}:${this.value}${
+            this.important ? '!important' : ''
+        }`;
     }
 }
 

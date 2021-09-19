@@ -184,42 +184,6 @@ video {
 [hidden] {
     display: none;
 }
-.grid-cols-10 {
-    grid-template-columns: repeat(10, minmax(0, 1fr));
-}
-.h-7 {
-    height: 1.75rem;
-}
-.grid-cols-10 {
-    grid-template-columns: repeat(10, minmax(0, 1fr));
-}
-.h-7 {
-    height: 1.75rem;
-}
-.grid-cols-10 {
-    grid-template-columns: repeat(10, minmax(0, 1fr));
-}
-.h-7 {
-    height: 1.75rem;
-}
-.grid-cols-10 {
-    grid-template-columns: repeat(10, minmax(0, 1fr));
-}
-.h-7 {
-    height: 1.75rem;
-}
-.grid-cols-10 {
-    grid-template-columns: repeat(10, minmax(0, 1fr));
-}
-.h-7 {
-    height: 1.75rem;
-}
-.grid-cols-10 {
-    grid-template-columns: repeat(10, minmax(0, 1fr));
-}
-.h-7 {
-    height: 1.75rem;
-}
 .space-y-2 > :not([hidden]) ~ :not([hidden]) {
     --tw-space-y-reverse: 0;
     margin-top: calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));
@@ -468,18 +432,9 @@ video {
 .grid {
     display: grid;
 }
-.grid {
-    display: grid;
+.h-7 {
+    height: 1.75rem;
 }
-.grid {
-    display: grid;
-}
-.grid {
-    display: grid;
-}
-.grid {
-    display: grid;
-}
-.grid {
-    display: grid;
+.grid-cols-10 {
+    grid-template-columns: repeat(10, minmax(0, 1fr));
 }

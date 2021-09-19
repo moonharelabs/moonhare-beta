@@ -1,4 +1,4 @@
-import {UtilityGenerator} from './interfaces';
+import type {UtilityGenerator} from './interfaces';
 import {dashify} from './style';
 
 export function propertyStatic(
