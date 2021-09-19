@@ -23,7 +23,7 @@ jobs:
             - run: pnpm install
             - run: pnpm format
             - run: pnpm build
-            - run: pnpm coverage
+            - run: pnpm test
             - run: |
                   git config user.name ksenginew
                   git config user.email ksenginew@users.noreply.github.com

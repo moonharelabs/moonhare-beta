@@ -29,18 +29,6 @@ exports[`Processor sample 1`] = `
     width: 1536px
   }
 }
-.object-cover {
-  object-position: cover
-}
-.\\\\!-z-30 {
-  z-index: -30!important
-}
-.-\\\\!inset-4 {
-  top: -1rem!important;
-  right: -1rem!important;
-  bottom: -1rem!important;
-  left: -1rem!important
-}
 .decoration-slice {
   box-decoration-break: slice
 }
@@ -50,11 +38,23 @@ exports[`Processor sample 1`] = `
 .clear-left {
   clear: left
 }
+.object-cover {
+  object-position: cover
+}
 .overflow-hidden {
   overflow: hidden
 }
 .static {
   position: static
+}
+.-\\\\!inset-4 {
+  top: -1rem!important;
+  right: -1rem!important;
+  bottom: -1rem!important;
+  left: -1rem!important
+}
+.\\\\!-z-30 {
+  z-index: -30!important
 }
 .isolate {
   isolation: isolate
