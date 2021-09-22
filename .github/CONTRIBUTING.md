@@ -26,7 +26,9 @@
 
 * Open a new GitHub pull request with the changed documentation.
 
-MoonHare is a volunteer effort. We encourage you to pitch in and join the organization! sendIp
+---
+
+MoonHare is a volunteer effort. We encourage you to pitch in and join the organization! send us an email(ksengine.github@gmail.com)
 
 Thanks! :heart: :heart: :heart:
 
