@@ -359,3 +359,96 @@ exports[`utilities object-position 1`] = `
   object-position: right bottom
 }"
 `;
+
+exports[`utilities object-position with config 1`] = `
+".object-cutom {
+  object-position: cutom
+}"
+`;
+
+exports[`utilities overflow 1`] = `
+".overflow-auto {
+  overflow: auto
+}
+.overflow-hidden {
+  overflow: hidden
+}
+.overflow-visible {
+  overflow: visible
+}
+.overflow-scroll {
+  overflow: scroll
+}"
+`;
+
+exports[`utilities overflow 2`] = `
+".overflow-x-auto {
+  overflow-x: auto
+}
+.overflow-x-hidden {
+  overflow-x: hidden
+}
+.overflow-x-visible {
+  overflow-x: visible
+}
+.overflow-x-scroll {
+  overflow-x: scroll
+}"
+`;
+
+exports[`utilities overflow 3`] = `
+".overflow-y-auto {
+  overflow-y: auto
+}
+.overflow-y-hidden {
+  overflow-y: hidden
+}
+.overflow-y-visible {
+  overflow-y: visible
+}
+.overflow-y-scroll {
+  overflow-y: scroll
+}"
+`;
+
+exports[`utilities overscroll-behavior 1`] = `
+".overscroll-auto {
+  overscroll: auto
+}
+.overscroll-contain {
+  overscroll: contain
+}
+.overscroll-none {
+  overscroll: none
+}"
+`;
+
+exports[`utilities overscroll-behavior 2`] = `
+".overscroll-x-auto {
+  overscroll-x: auto
+}
+.overscroll-x-contain {
+  overscroll-x: contain
+}
+.overscroll-x-none {
+  overscroll-x: none
+}"
+`;
+
+exports[`utilities overscroll-behavior 3`] = `
+".overscroll-y-auto {
+  overscroll-y: auto
+}
+.overscroll-y-contain {
+  overscroll-y: contain
+}
+.overscroll-y-none {
+  overscroll-y: none
+}"
+`;
+
+exports[`utilities overscroll-behavior 4`] = `""`;
+
+exports[`utilities overscroll-behavior 5`] = `""`;
+
+exports[`utilities overscroll-behavior 6`] = `""`;

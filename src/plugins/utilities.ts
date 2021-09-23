@@ -1,5 +1,5 @@
-import type { Plugin } from '../interfaces';
-import { Block, dashify } from '../style';
+import type {Plugin} from '../interfaces';
+import {Block, dashify} from '../style';
 
 export default (({
     addBase: base,
@@ -16,10 +16,10 @@ export default (({
             Object.fromEntries(
                 values.map(value => [
                     `.${value}`,
-                    { [dashify(property)]: value } as { [key in P]: V }
+                    {[dashify(property)]: value} as {[key in P]: V}
                 ])
             ),
-            { group: property }
+            {group: property}
         );
     }
 
@@ -28,10 +28,10 @@ export default (({
             Object.fromEntries(
                 values.map(value => [
                     `.${name}-${value}`,
-                    { [dashify(property)]: value }
+                    {[dashify(property)]: value}
                 ])
             ),
-            { group: property }
+            {group: property}
         );
     }
 
@@ -44,10 +44,10 @@ export default (({
             Object.fromEntries(
                 Object.entries(map).map(([value, css]) => [
                     `.${name}-${value}`,
-                    { [dashify(property)]: css }
+                    {[dashify(property)]: css}
                 ])
             ),
-            { group: property }
+            {group: property}
         );
     }
 
@@ -80,7 +80,7 @@ export default (({
                 )
             }
         },
-        { group: 'container' }
+        {group: 'container'}
     );
 
     // https://tailwindcss.com/docs/box-decoration-break
@@ -123,10 +123,10 @@ export default (({
                 'hidden'
             ].map(value => [
                 '.' + value,
-                { display: value === 'hidden' ? 'none' : value }
+                {display: value === 'hidden' ? 'none' : value}
             ])
         ),
-        { group: 'display' }
+        {group: 'display'}
     );
 
     // https://tailwindcss.com/docs/float
@@ -145,7 +145,7 @@ export default (({
                 isolation: 'auto'
             }
         },
-        { group: 'isolation' }
+        {group: 'isolation'}
     );
 
     // https://tailwindcss.com/docs/object-fit
@@ -167,7 +167,7 @@ export default (({
     nameValue(overflow, 'overflow-y');
 
     // https://tailwindcss.com/docs/overscroll-behavior
-    const overscroll = ['auto', 'contain', 'none',];
+    const overscroll = ['auto', 'contain', 'none'];
     nameValue(overscroll, 'overscroll');
     nameValue(overscroll, 'overscroll-x');
     nameValue(overscroll, 'overscroll-y');
@@ -212,10 +212,10 @@ export default (({
     // https://tailwindcss.com/docs/visibility
     add(
         {
-            '.visible': { visibility: 'visible' },
-            '.invisible': { visibility: 'hidden' }
+            '.visible': {visibility: 'visible'},
+            '.invisible': {visibility: 'hidden'}
         },
-        { group: 'visibility' }
+        {group: 'visibility'}
     );
 
     // https://tailwindcss.com/docs/z-index
@@ -232,11 +232,11 @@ export default (({
         utility
             .color(
                 theme('backgroundColor') || theme('colors'),
-                ({ r, g, b }) => `rgba(${r},${g},${b},var(--mh-bg-opacity))`
+                ({r, g, b}) => `rgba(${r},${g},${b},var(--mh-bg-opacity))`
             )
             .sqb()
             .variable()
-            .css({ '--mh-bg-opacity': '1', backgroundColor: utility.value })
+            .css({'--mh-bg-opacity': '1', backgroundColor: utility.value})
             ?.map(style => style.meta('utilities', 'backgroundColor'))
     );
 
@@ -264,15 +264,15 @@ export default (({
             .css(
                 utility.match[1] === 'x'
                     ? {
-                        '--tw-space-x-reverse': '0',
-                        'margin-right': `calc(${utility.value} * var(--tw-space-x-reverse))`,
-                        'margin-left': `calc(${utility.value} * calc(1 - var(--tw-space-x-reverse)))`
-                    }
+                          '--tw-space-x-reverse': '0',
+                          'margin-right': `calc(${utility.value} * var(--tw-space-x-reverse))`,
+                          'margin-left': `calc(${utility.value} * calc(1 - var(--tw-space-x-reverse)))`
+                      }
                     : {
-                        '--tw-space-y-reverse': '0',
-                        'margin-top': `calc(${utility.value} * calc(1 - var(--tw-space-y-reverse)))`,
-                        'margin-bottom': `calc(${utility.value} * var(--tw-space-y-reverse))`
-                    }
+                          '--tw-space-y-reverse': '0',
+                          'margin-top': `calc(${utility.value} * calc(1 - var(--tw-space-y-reverse)))`,
+                          'margin-bottom': `calc(${utility.value} * var(--tw-space-y-reverse))`
+                      }
             )
             ?.map(style => {
                 style.selectors = style.selectors.map(
@@ -283,7 +283,7 @@ export default (({
                     'space',
                     undefined,
                     (utility.match[1] === 'x' ? 2 : 1) +
-                    (utility.isNegative ? 2 : 0)
+                        (utility.isNegative ? 2 : 0)
                 );
             })
     );
