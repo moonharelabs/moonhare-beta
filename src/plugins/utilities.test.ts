@@ -1,7 +1,7 @@
 import Processor from '..';
 import CleanCSS from 'clean-css';
 
-const cleanCss = new CleanCSS({format: 'beautify'});
+const cleanCss = new CleanCSS({ format: 'beautify' });
 
 const processor = new Processor();
 function css(className: string, proc = processor) {
@@ -23,7 +23,7 @@ describe('utilities', () => {
                 'container',
                 new Processor({
                     theme: {
-                        container: {padding: '2rem'}
+                        container: { padding: '2rem' }
                     }
                 })
             )
@@ -33,7 +33,7 @@ describe('utilities', () => {
                 'container',
                 new Processor({
                     theme: {
-                        container: {padding: {DEFAULT: '4rem'}}
+                        container: { padding: { DEFAULT: '4rem' } }
                     }
                 })
             )
@@ -46,7 +46,7 @@ describe('utilities', () => {
                 'container',
                 new Processor({
                     theme: {
-                        container: {center: true}
+                        container: { center: true }
                     }
                 })
             )
@@ -164,20 +164,40 @@ describe('utilities', () => {
         ).toMatchSnapshot();
     });
 
-    test.todo(
-        'object-position with config' /*, () => {
-        expect(
-            css(
-                '',
-                new Processor({
-                    theme: {
-                        objectPosition: {}
-                    }
-                })
-            )
-        ).toMatchSnapshot();
-    }*/
+    test(
+        'object-position with config', () => {
+            expect(
+                css(
+                    'object-cutom',
+                    new Processor({
+                        theme: {
+                            objectPosition: {
+                                custom: '200px 300px'
+                            }
+                        }
+                    })
+                )
+            ).toMatchSnapshot();
+        }
     );
+
+    test('overflow', () => {
+        expect(css('overflow-auto overflow-hidden overflow-visible overflow-scroll')).toMatchSnapshot();
+        expect(css('overflow-x-auto overflow-x-hidden overflow-x-visible overflow-x-scroll')).toMatchSnapshot();
+        expect(css('overflow-y-auto overflow-y-hidden overflow-y-visible overflow-y-scroll')).toMatchSnapshot();
+    });
+
+    test('overscroll-behavior', () => {
+        expect(css('overscroll-auto overscroll-contain overscroll-none')).toMatchSnapshot();
+        expect(css('overscroll-x-auto overscroll-x-contain overscroll-x-none')).toMatchSnapshot();
+        expect(css('overscroll-y-auto overscroll-y-contain overscroll-y-none')).toMatchSnapshot();
+    });
+    
+    test('overscroll-behavior', () => {
+        expect(css('overscroll-auto overscroll-contain overscroll-none')).toMatchSnapshot();
+        expect(css('overscroll-x-auto overscroll-x-contain overscroll-x-none')).toMatchSnapshot();
+        expect(css('overscroll-y-auto overscroll-y-contain overscroll-y-none')).toMatchSnapshot();
+    });
 
     test('grid-cols', () => {
         expect(css('grid-cols-10')).toMatchSnapshot();
