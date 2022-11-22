@@ -49,7 +49,7 @@
         "@typescript-eslint/parser": "^4.31.1",
         "clean-css": "^5.1.5",
         "csstype": "^3.0.9",
-        "eslint": "^7.32.0",
+        "eslint": "^8.28.0",
         "eslint-config-prettier": "^8.3.0",
         "eslint-plugin-jest": "^24.3.6",
         "eslint-plugin-prettier": "^4.0.0",
